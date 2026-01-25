@@ -1063,6 +1063,71 @@ ollama pull bge-m3</code>
             </div>
         </div>
 
+        <!-- Package Installation Error Section -->
+        <div class="step-card" style="border: 2px solid var(--warning); margin-top: 2rem;">
+            <div class="step-header">
+                <div class="step-number" style="background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);">!</div>
+                <div>
+                    <div class="step-title">📦 패키지 설치가 안 될 때</div>
+                    <div class="step-subtitle">경로 문제로 패키지가 제대로 설치되지 않는 경우</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">증상</div>
+                <p>Antigravity 폴더가 여러 곳에 있거나, 경로가 잘못 지정되어 패키지가 설치되지 않는 경우가 있어요.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">해결: 터미널에서 직접 설치</div>
+                <p>터미널(CMD/PowerShell)을 열고 <code>rag_chatbot</code> 폴더로 이동한 후 아래 명령어를 실행하세요:</p>
+                <div class="code-block">
+                    <code>pip install streamlit langchain langchain-ollama chromadb pypdf</code>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">각 패키지가 필요한 이유</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>패키지</th>
+                                <th>용도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>streamlit</code></td>
+                                <td>웹 UI 화면 만들기 (챗봇 인터페이스)</td>
+                            </tr>
+                            <tr>
+                                <td><code>langchain</code></td>
+                                <td>LLM 체인 구성 (RAG 파이프라인)</td>
+                            </tr>
+                            <tr>
+                                <td><code>langchain-ollama</code></td>
+                                <td>Ollama 모델 연동</td>
+                            </tr>
+                            <tr>
+                                <td><code>chromadb</code></td>
+                                <td>벡터 데이터베이스 (문서 검색용)</td>
+                            </tr>
+                            <tr>
+                                <td><code>pypdf</code></td>
+                                <td>PDF 파일 읽기</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <span class="alert-icon">⚠️</span>
+                <div>가상환경이 활성화된 상태에서 설치해야 해요! 터미널 앞에 <code>(venv)</code> 또는 <code>(.venv)</code>가 보이는지 확인하세요.</div>
+            </div>
+        </div>
+
         <!-- AI Warning Section -->
         <div class="alert alert-warning" style="margin: 2rem 0; padding: 1.5rem;">
             <span class="alert-icon">⚠️</span>
