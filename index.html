@@ -624,7 +624,7 @@
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
-            <div class="hero-badge">🚀 왕초보용 v2.1</div>
+            <div class="hero-badge">🚀 왕초보용 v2.2</div>
             <h1>RAG 챗봇 실습 환경 설정 가이드</h1>
             <p>어려운 명령어는 AI한테 시킨다!</p>
             <div class="hero-meta">
@@ -663,6 +663,68 @@
                     <div class="flow-step-num">5</div>
                     <div class="flow-step-text">코드 실행<br><strong>AI한테 시킴</strong></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Pre-check Section -->
+        <div class="step-card" style="border: 2px solid var(--accent); background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+            <div class="step-header">
+                <div class="step-number" style="background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);">✓</div>
+                <div>
+                    <div class="step-title">시작 전 체크리스트</div>
+                    <div class="step-subtitle">실습 전에 먼저 확인하세요!</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">컴퓨터 사양 확인</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>항목</th>
+                                <th>최소 사양</th>
+                                <th>권장 사양</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>RAM (메모리)</strong></td>
+                                <td>8GB</td>
+                                <td>16GB 이상</td>
+                            </tr>
+                            <tr>
+                                <td><strong>저장 공간</strong></td>
+                                <td>10GB 이상 여유</td>
+                                <td>20GB 이상 여유</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>확인 방법:</strong></p>
+                <ul class="step-list">
+                    <li><strong>Windows:</strong> 설정 → 시스템 → 정보 (RAM 확인) / 내 PC 우클릭 → 속성 → 저장소 (용량 확인)</li>
+                    <li><strong>Mac:</strong> 좌측 상단  → 이 Mac에 관하여 (RAM, 저장 공간 모두 확인 가능)</li>
+                </ul>
+                <div class="alert alert-warning">
+                    <span class="alert-icon">⚠️</span>
+                    <div>Ollama 모델(qwen2.5:7b, bge-m3)이 약 <strong>6~7GB</strong>를 차지합니다. 저장 공간을 꼭 확인하세요!</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">터미널(명령 프롬프트) 여는 방법</div>
+                <p>나중에 직접 명령어를 입력해야 할 때 필요해요:</p>
+                <ul class="step-list">
+                    <li><strong>Windows:</strong>
+                        <code>Win + R</code> → <code>cmd</code> 입력 → Enter<br>
+                        또는 시작 메뉴에서 "명령 프롬프트" 검색
+                    </li>
+                    <li><strong>Mac:</strong>
+                        <code>Cmd + Space</code> → "터미널" 입력 → Enter<br>
+                        또는 응용 프로그램 → 유틸리티 → 터미널
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -970,6 +1032,21 @@ ollama pull bge-m3</code>
                     <div><code>qwen2.5:7b</code>와 <code>bge-m3</code>가 보이면 성공!</div>
                 </div>
             </div>
+
+            <div class="substep">
+                <div class="substep-title">Ollama 실행 확인</div>
+                <p>Ollama는 백그라운드에서 실행되어야 합니다:</p>
+                <ul class="step-list">
+                    <li><strong>Windows:</strong> 우측 하단 시스템 트레이에 🦙 라마 아이콘이 있는지 확인<br>
+                        없으면 시작 메뉴에서 "Ollama" 검색해서 실행</li>
+                    <li><strong>Mac:</strong> 상단 메뉴바에 🦙 라마 아이콘이 있는지 확인<br>
+                        없으면 응용 프로그램에서 Ollama 실행</li>
+                </ul>
+                <div class="alert alert-warning">
+                    <span class="alert-icon">⚠️</span>
+                    <div>Ollama가 실행 중이 아니면 챗봇이 작동하지 않아요!</div>
+                </div>
+            </div>
         </div>
 
         <!-- Step 5 -->
@@ -1042,6 +1119,31 @@ ollama pull bge-m3</code>
                 <p style="margin-top: 1.5rem;"><strong>실행 화면 예시 (app_step1.py):</strong></p>
                 <img src="images/app-step1.png" alt="RAG 챗봇 Step 1 실행 화면" style="width: 100%; border-radius: 0.75rem; margin: 1rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid var(--border);">
                 <p style="color: var(--text-muted); font-size: 0.9rem;">1. PDF 파일 선택 (data 폴더) → 2. 벡터DB 생성 → 3. 질문하기</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">터미널 메시지 확인하기</div>
+                <p><strong>✅ 성공했을 때 터미널에 보이는 메시지:</strong></p>
+                <div class="code-block">
+                    <code>  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.x.x:8501</code>
+                </div>
+
+                <p style="margin-top: 1rem;"><strong>❌ 에러가 났을 때 흔한 메시지:</strong></p>
+                <div class="code-block" style="background: #7f1d1d;">
+                    <code>ModuleNotFoundError: No module named 'streamlit'
+→ 패키지가 설치 안 됨. Step 3 다시 진행!
+
+Connection refused / Ollama not running
+→ Ollama가 실행 중이 아님. Step 4 "Ollama 실행 확인" 참고!</code>
+                </div>
+
+                <div class="alert alert-info">
+                    <span class="alert-icon">💡</span>
+                    <div>브라우저가 자동으로 안 열리면 직접 <code>http://localhost:8501</code> 주소를 입력하세요!</div>
+                </div>
             </div>
         </div>
 
@@ -1187,6 +1289,48 @@ ollama pull bge-m3</code>
             <div class="alert alert-warning">
                 <span class="alert-icon">⚠️</span>
                 <div>가상환경이 활성화된 상태에서 설치해야 해요! 터미널 앞에 <code>(venv)</code> 또는 <code>(.venv)</code>가 보이는지 확인하세요.</div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="step-card" style="margin-top: 2rem;">
+            <div class="step-header">
+                <div class="step-number" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">?</div>
+                <div>
+                    <div class="step-title">❓ 자주 묻는 질문 (FAQ)</div>
+                    <div class="step-subtitle">왕초보들이 자주 헷갈려하는 것들</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Q. 가상환경이 이미 있는데 다시 만들어도 되나요?</div>
+                <p><strong>A.</strong> 네, 괜찮아요! 기존 가상환경 폴더(venv 또는 .venv)를 삭제하고 다시 만들면 됩니다.<br>
+                문제가 생겼을 때 가상환경을 새로 만드는 게 가장 깔끔한 해결책이에요.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Q. Ollama가 실행 중인지 어떻게 확인하나요?</div>
+                <p><strong>A.</strong> 터미널에서 <code>ollama list</code>를 입력해보세요.<br>
+                모델 목록이 나오면 실행 중인 거예요. 에러가 나면 Ollama를 실행해주세요.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Q. 브라우저가 자동으로 안 열려요!</div>
+                <p><strong>A.</strong> 터미널에 <code>http://localhost:8501</code> 주소가 보이면 성공한 거예요.<br>
+                직접 브라우저를 열고 주소창에 <code>localhost:8501</code>을 입력하세요.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Q. "pip" 명령어가 안 돼요!</div>
+                <p><strong>A.</strong> 가상환경이 활성화되지 않았거나, Python이 PATH에 등록되지 않았을 수 있어요.<br>
+                • 가상환경 활성화 확인: 터미널 앞에 <code>(venv)</code>가 보이나요?<br>
+                • Windows: <code>py -m pip install ...</code> 로 시도해보세요.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Q. 실행했는데 아무 반응이 없어요!</div>
+                <p><strong>A.</strong> 첫 실행 시 모델 로딩에 시간이 걸릴 수 있어요 (특히 RAM이 8GB인 경우).<br>
+                터미널에 에러 메시지가 없다면 잠시 기다려보세요.</p>
             </div>
         </div>
 
