@@ -624,7 +624,7 @@
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
-            <div class="hero-badge">🚀 왕초보용 v2.2</div>
+            <div class="hero-badge">🚀 왕초보용 v2.3</div>
             <h1>RAG 챗봇 실습 환경 설정 가이드</h1>
             <p>어려운 명령어는 AI한테 시킨다!</p>
             <div class="hero-meta">
@@ -727,6 +727,47 @@
                         또는 응용 프로그램 → 유틸리티 → 터미널
                     </li>
                 </ul>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">용어 미리 알기</div>
+                <p>실습에서 나오는 용어들이에요. 지금 완벽히 이해 안 해도 괜찮아요!</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>용어</th>
+                                <th>쉬운 설명</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>RAG</strong></td>
+                                <td>AI가 내 문서를 읽고 답변하는 기술. "검색 + AI 답변"의 조합</td>
+                            </tr>
+                            <tr>
+                                <td><strong>벡터DB</strong></td>
+                                <td>문서를 숫자로 변환해서 저장하는 특별한 저장소. 비슷한 내용을 빠르게 찾아줌</td>
+                            </tr>
+                            <tr>
+                                <td><strong>임베딩</strong></td>
+                                <td>텍스트를 숫자(벡터)로 바꾸는 것. "사과"와 "배"가 비슷한 숫자가 되도록</td>
+                            </tr>
+                            <tr>
+                                <td><strong>LLM</strong></td>
+                                <td>Large Language Model. ChatGPT 같은 대형 AI 모델</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ollama</strong></td>
+                                <td>내 컴퓨터에서 AI 모델을 실행하게 해주는 프로그램</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Streamlit</strong></td>
+                                <td>Python으로 웹 화면을 쉽게 만들어주는 도구</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1412,9 +1453,62 @@ ollama pull bge-m3</code>
             </div>
         </div>
 
+        <!-- Cleanup Section -->
+        <div class="step-card" style="margin-top: 2rem; border: 2px dashed var(--border);">
+            <div class="step-header">
+                <div class="step-number" style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);">🧹</div>
+                <div>
+                    <div class="step-title">실습 후 정리 방법</div>
+                    <div class="step-subtitle">나중에 실습 환경이 필요 없을 때 삭제하는 방법</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">1. 가상환경 삭제</div>
+                <p><code>rag_chatbot</code> 폴더 안의 <code>venv</code> 또는 <code>.venv</code> 폴더를 삭제하면 됩니다.</p>
+                <div class="code-block">
+                    <span class="code-label">Windows</span>
+                    <code>rmdir /s /q venv</code>
+                </div>
+                <div class="code-block">
+                    <span class="code-label">Mac</span>
+                    <code>rm -rf venv</code>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">또는 그냥 폴더를 휴지통에 버려도 됩니다.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">2. Ollama 모델 삭제</div>
+                <p>다운받은 AI 모델을 삭제하려면:</p>
+                <div class="code-block">
+                    <code>ollama rm qwen2.5:7b
+ollama rm bge-m3</code>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">약 6~7GB 저장 공간이 확보됩니다.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">3. Ollama 프로그램 삭제</div>
+                <ul class="step-list">
+                    <li><strong>Windows:</strong> 설정 → 앱 → Ollama 제거</li>
+                    <li><strong>Mac:</strong> 응용 프로그램 폴더에서 Ollama를 휴지통으로 이동</li>
+                </ul>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">4. 실습 폴더 삭제</div>
+                <p><code>rag_chatbot</code> 폴더 전체를 휴지통에 버리면 끝!</p>
+            </div>
+
+            <div class="alert alert-info">
+                <span class="alert-icon">💡</span>
+                <div>Python과 Antigravity는 다른 프로젝트에서도 쓸 수 있으니 남겨두는 걸 추천해요!</div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <footer class="footer">
-            <p>작성일: 2026년 1월 | 버전: 2.1</p>
+            <p>작성일: 2026년 1월 | 버전: 2.3</p>
             <p>데이터공작소 TFT</p>
         </footer>
     </div>
