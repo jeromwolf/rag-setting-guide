@@ -1375,6 +1375,38 @@ ollama pull bge-m3</code>
                 <p><strong>A.</strong> 첫 실행 시 모델 로딩에 시간이 걸릴 수 있어요 (특히 RAM이 8GB인 경우).<br>
                 터미널에 에러 메시지가 없다면 잠시 기다려보세요.</p>
             </div>
+
+            <div class="substep">
+                <div class="substep-title">Q. 가상환경을 여러 개 만들어서 꼬였어요!</div>
+                <p><strong>A.</strong> 전부 삭제하고 처음부터 다시 만드는 게 가장 깔끔해요!</p>
+
+                <p style="margin-top: 1rem;"><strong>1단계: 기존 가상환경 폴더 모두 삭제</strong></p>
+                <p><code>rag_chatbot</code> 폴더 안에서 아래 이름의 폴더를 모두 삭제하세요:</p>
+                <ul class="step-list">
+                    <li><code>venv</code></li>
+                    <li><code>.venv</code></li>
+                    <li><code>env</code></li>
+                    <li><code>myenv</code></li>
+                    <li>또는 가상환경으로 만든 다른 폴더들</li>
+                </ul>
+
+                <p style="margin-top: 1rem;"><strong>2단계: Antigravity한테 새로 만들라고 시키기</strong></p>
+                <div class="code-block" style="background: #166534;">
+                    <code>기존 가상환경을 다 삭제했어.
+이 폴더에 Python 가상환경을 새로 만들고 활성화한 다음,
+아래 패키지들을 설치해줘:
+
+langchain==0.3.14
+langchain-ollama==0.2.2
+langchain-community==0.3.14
+chromadb==0.5.23
+streamlit==1.41.1
+pypdf==5.1.0
+
+설치 후 가상환경의 파이썬 버전도 확인해줘.</code>
+                </div>
+                <p class="code-hint">👆 드래그해서 복사 후 Antigravity에 붙여넣기</p>
+            </div>
         </div>
 
         <!-- AI Warning Section -->
