@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac 시스템 소리 + 마이크 동시 녹음 설정 가이드</title>
+    <style>
+        :root {
+            --primary: #007AFF;
+            --bg: #f5f5f7;
+            --card-bg: #ffffff;
+            --text: #1d1d1f;
+            --text-light: #86868b;
+            --border: #d2d2d7;
+            --success: #34c759;
+            --code-bg: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .step {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .step-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            padding-left: 44px;
+        }
+
+        .instructions {
+            padding-left: 44px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 12px;
+        }
+
+        .code {
+            background: var(--code-bg);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+            margin: 8px 0;
+            overflow-x: auto;
+        }
+
+        .kbd {
+            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 0 #bbb;
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .checkbox-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checkbox-list li {
+            padding: 8px 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-list li::before {
+            content: "✅ ";
+        }
+
+        .checkbox-list li.unchecked::before {
+            content: "⬜ ";
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg);
+            font-weight: 600;
+        }
+
+        .tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid var(--success);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 30px 0;
+        }
+
+        .summary-box h3 {
+            margin-bottom: 16px;
+        }
+
+        .summary-box table {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .summary-box th, .summary-box td {
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .shortcut-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .shortcut-section h3 {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .shortcut-item {
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shortcut-label {
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-light);
+            margin-top: 40px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ Mac 시스템 소리 + 마이크 동시 녹음</h1>
+        <p class="subtitle">BlackHole을 이용한 화면 녹화 오디오 설정 가이드</p>
+
+        <!-- Step 1 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Homebrew 설치 확인</div>
+            </div>
+            <p class="step-desc">BlackHole을 설치하기 위해 Homebrew가 필요합니다</p>
+            <div class="instructions">
+                <ol>
+                    <li>터미널 열기: <span class="kbd">Cmd</span> + <span class="kbd">Space</span> → "터미널" 입력 → <span class="kbd">Enter</span></li>
+                    <li>아래 명령어 입력:
+                        <div class="code">brew --version</div>
+                    </li>
+                    <li>
+                        결과 확인:
+                        <ul>
+                            <li>버전 번호가 나오면 → <strong>2단계로 진행</strong></li>
+                            <li>"command not found" 나오면 → Homebrew 먼저 설치 필요</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">BlackHole 설치</div>
+            </div>
+            <p class="step-desc">가상 오디오 장치를 설치합니다</p>
+            <div class="instructions">
+                <ol>
+                    <li>터미널에 아래 명령어 입력:
+                        <div class="code">brew install blackhole-2ch</div>
+                    </li>
+                    <li>비밀번호 입력하라고 하면 → Mac 로그인 비밀번호 입력</li>
+                </ol>
+                <div class="tip">
+                    💡 비밀번호 입력할 때 화면에 안 보여도 정상이에요. 그냥 입력하고 <span class="kbd">Enter</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">오디오 MIDI 설정 열기</div>
+            </div>
+            <div class="instructions">
+                <ol>
+                    <li><span class="kbd">Cmd</span> + <span class="kbd">Space</span> 누르기</li>
+                    <li>"오디오 MIDI 설정" 입력</li>
+                    <li><span class="kbd">Enter</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">다중 출력 기기 만들기</div>
+            </div>
+            <p class="step-desc">🔊 이건 <strong>소리를 듣기 위한</strong> 설정이에요</p>
+            <div class="instructions">
+                <ol>
+                    <li>왼쪽 하단 <strong>+</strong> 버튼 클릭</li>
+                    <li><strong>"다중 출력 장치 생성"</strong> 클릭</li>
+                    <li>오른쪽 목록에서 체크:
+                        <ul class="checkbox-list">
+                            <li>MacBook Pro 스피커</li>
+                            <li>BlackHole 2ch</li>
+                        </ul>
+                    </li>
+                    <li>상단 <strong>기본 기기</strong> → <strong>MacBook Pro 스피커</strong> 선택</li>
+                    <li><strong>드리프트 보정</strong> → BlackHole 2ch만 체크</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <div class="step-title">통합 기기 만들기</div>
+            </div>
+            <p class="step-desc">🎤 이건 <strong>녹음을 위한</strong> 설정이에요</p>
+            <div class="instructions">
+                <ol>
+                    <li>왼쪽 하단 <strong>+</strong> 버튼 클릭</li>
+                    <li><strong>"통합 장치 생성"</strong> 클릭</li>
+                    <li>오른쪽 목록에서 체크:
+                        <ul class="checkbox-list">
+                            <li>BlackHole 2ch (시스템 소리용)</li>
+                            <li>MacBook Pro 마이크 (내 목소리용)</li>
+                        </ul>
+                    </li>
+                    <li><strong>드리프트 보정</strong> → BlackHole 2ch 체크</li>
+                </ol>
+                <div class="tip">
+                    💡 외부 마이크를 사용할 경우, "MacBook Pro 마이크" 대신 <strong>외부 마이크</strong>를 체크하세요!
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <div class="step-title">시스템 사운드 출력 변경</div>
+            </div>
+            <div class="instructions">
+                <ol>
+                    <li>좌측 상단  → <strong>시스템 설정</strong> 클릭</li>
+                    <li><strong>사운드</strong> 클릭</li>
+                    <li><strong>출력</strong> 탭 선택</li>
+                    <li><strong>다중 출력 기기</strong> 선택</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">7</div>
+                <div class="step-title">Record 앱 설정</div>
+            </div>
+            <div class="instructions">
+                <ol>
+                    <li>Record 앱 열기</li>
+                    <li>녹화 옵션에서 마이크/오디오 입력 찾기</li>
+                    <li><strong>통합 기기</strong> 선택</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Record App Shortcuts -->
+        <div class="shortcut-section">
+            <h3>⌨️ Record 앱 단축키</h3>
+            <div class="shortcut-grid">
+                <div class="shortcut-item">
+                    <span class="shortcut-label">녹화 시작/중지</span>
+                    <span><span class="kbd">Cmd</span> + <span class="kbd">Shift</span> + <span class="kbd">5</span></span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-label">스크린샷 (전체화면)</span>
+                    <span><span class="kbd">Cmd</span> + <span class="kbd">Shift</span> + <span class="kbd">3</span></span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-label">스크린샷 (영역선택)</span>
+                    <span><span class="kbd">Cmd</span> + <span class="kbd">Shift</span> + <span class="kbd">4</span></span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-label">녹화 중지</span>
+                    <span><span class="kbd">Cmd</span> + <span class="kbd">Control</span> + <span class="kbd">Esc</span></span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-label">앱 종료</span>
+                    <span><span class="kbd">Cmd</span> + <span class="kbd">Q</span></span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-label">설정 열기</span>
+                    <span><span class="kbd">Cmd</span> + <span class="kbd">,</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">8</div>
+                <div class="step-title">테스트</div>
+            </div>
+            <div class="instructions">
+                <ol>
+                    <li>유튜브 영상 재생 → 소리 들리는지 확인</li>
+                    <li>Record 앱에서 짧게 녹화 (10초)</li>
+                    <li>녹화된 영상 재생</li>
+                    <li>유튜브 소리 + 내 목소리 둘 다 들리면 성공!</li>
+                </ol>
+                <div class="success">
+                    ✅ 유튜브 소리가 들리고, 녹화된 영상에서 시스템 소리와 내 목소리가 모두 들리면 설정 완료!
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-box">
+            <h3>📋 설정 요약</h3>
+            <table>
+                <tr>
+                    <th>어디서</th>
+                    <th>뭘 선택</th>
+                </tr>
+                <tr>
+                    <td>시스템 설정 → 사운드 → 출력</td>
+                    <td><strong>다중 출력 기기</strong></td>
+                </tr>
+                <tr>
+                    <td>Record 앱 → 마이크</td>
+                    <td><strong>통합 기기</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">?</div>
+                <div class="step-title">문제 해결</div>
+            </div>
+            <div class="instructions">
+                <table>
+                    <tr>
+                        <th>문제</th>
+                        <th>해결 방법</th>
+                    </tr>
+                    <tr>
+                        <td>소리가 안 들려요</td>
+                        <td>다중 출력 기기의 "기본 기기"가 MacBook Pro 스피커인지 확인</td>
+                    </tr>
+                    <tr>
+                        <td>내 목소리가 안 녹음돼요</td>
+                        <td>Record 앱에서 "통합 기기" 선택했는지 확인</td>
+                    </tr>
+                    <tr>
+                        <td>유튜브 소리가 안 녹음돼요</td>
+                        <td>시스템 출력이 "다중 출력 기기"인지 확인</td>
+                    </tr>
+                    <tr>
+                        <td>설정 변경해도 안 돼요</td>
+                        <td>Record 앱 완전 종료 (<span class="kbd">Cmd</span> + <span class="kbd">Q</span>) 후 다시 열기</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made with ❤️ for easy screen recording</p>
+        </footer>
+    </div>
+</body>
+</html>

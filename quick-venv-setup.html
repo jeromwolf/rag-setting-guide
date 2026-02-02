@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빠른 가상환경 만들기 - 2회차 세미나용</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #10b981;
+            --accent-light: #34d399;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --bg-card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --teal: #0d9488;
+            --teal-dark: #0f766e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-meta {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Flow Overview */
+        .flow-section {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: -3rem auto 2rem;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            max-width: 850px;
+        }
+
+        .flow-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .flow-step-num {
+            width: 40px;
+            height: 40px;
+            background: var(--teal);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-step-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .flow-arrow {
+            color: var(--border);
+            font-size: 1.5rem;
+        }
+
+        /* Step Cards */
+        .step-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--bg);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--teal) 0%, var(--accent-light) 100%);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .step-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Sub Steps */
+        .substep {
+            margin-bottom: 1.5rem;
+        }
+
+        .substep:last-child {
+            margin-bottom: 0;
+        }
+
+        .substep-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .substep-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--teal);
+            border-radius: 2px;
+        }
+
+        /* Lists */
+        .step-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .step-list li {
+            padding: 0.5rem 0 0.5rem 1.75rem;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+        }
+
+        /* Numbered Lists */
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+        }
+
+        .numbered-list li {
+            padding: 0.5rem 0 0.5rem 2.5rem;
+            position: relative;
+            counter-increment: item;
+        }
+
+        .numbered-list li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 0.4rem;
+            width: 24px;
+            height: 24px;
+            background: var(--bg);
+            border: 2px solid var(--teal);
+            color: var(--teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow-x: auto;
+            cursor: text;
+            user-select: text;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--code-text);
+            line-height: 1.6;
+            display: block;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .code-label {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .code-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Inline Code */
+        code:not(.code-block code) {
+            font-family: 'JetBrains Mono', monospace;
+            background: #e2e8f0;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.85em;
+            color: var(--primary-dark);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .alert-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        /* Folder Structure */
+        .folder-structure {
+            background: var(--code-bg);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--code-text);
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .folder-structure .folder {
+            color: #fbbf24;
+        }
+
+        .folder-structure .file {
+            color: #60a5fa;
+        }
+
+        .folder-structure .comment {
+            color: #6b7280;
+        }
+
+        /* ASCII Box */
+        .ascii-box {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre;
+            color: var(--text-muted);
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg);
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        tr:hover {
+            background: var(--bg);
+        }
+
+        /* Result Indicators */
+        .result {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .result-icon {
+            font-size: 1.1rem;
+        }
+
+        .result-success { color: var(--accent); }
+        .result-warning { color: var(--warning); }
+        .result-error { color: var(--danger); }
+
+        /* Section Divider */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 2rem 0;
+        }
+
+        /* Help Section */
+        .help-section {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #86efac;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .help-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Checklist Section */
+        .checklist-section {
+            background: var(--bg-card);
+            border: 2px solid var(--teal);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .checklist-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+            color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .summary-table th {
+            background: rgba(255,255,255,0.1);
+            font-weight: 700;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .summary-badge-ai {
+            background: var(--accent);
+        }
+
+        .summary-quote {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Option tabs */
+        .option-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-tab {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .option-tab.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: white;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .flow-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .step-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .step-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">2회차 세미나용</div>
+            <h1>빠른 가상환경 만들기</h1>
+            <p>이미 1회차 환경이 있는 분도, 처음 시작하는 분도 OK!</p>
+            <div class="hero-meta">
+                <span>5~10분 소요</span>
+                <span>Python + pip만 있으면 됨</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Flow Overview -->
+        <div class="flow-section">
+            <div class="flow-title">내 상황에 맞는 방법 선택</div>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-step-num">A</div>
+                    <div class="flow-step-text">1회차 환경<br><strong>있음</strong></div>
+                </div>
+                <div class="flow-arrow">|</div>
+                <div class="flow-step">
+                    <div class="flow-step-num">B</div>
+                    <div class="flow-step-text">처음부터<br><strong>새로 설치</strong></div>
+                </div>
+                <div class="flow-arrow">|</div>
+                <div class="flow-step">
+                    <div class="flow-step-num">C</div>
+                    <div class="flow-step-text">AI한테<br><strong>시키기</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: 기존 환경 업데이트 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">A</div>
+                <div>
+                    <div class="step-title">이미 1회차 가상환경이 있어요</div>
+                    <div class="step-subtitle">기존 환경에 2회차 패키지만 추가 설치</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">기존 가상환경 활성화</div>
+                <div class="code-block">
+                    <span class="code-label">Windows</span>
+                    <code>.venv\Scripts\activate</code>
+                </div>
+                <div class="code-block">
+                    <span class="code-label">Mac</span>
+                    <code>source .venv/bin/activate</code>
+                </div>
+                <p class="code-hint">터미널 앞에 (.venv) 가 표시되면 활성화된 상태입니다.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">2회차 추가 패키지 설치</div>
+                <div class="code-block">
+                    <code>pip install sentence-transformers lark langgraph numpy python-dotenv</code>
+                </div>
+                <p class="code-hint">1회차에 설치한 langchain, chromadb, streamlit 등은 이미 있으므로 추가분만 설치합니다.</p>
+
+                <div class="alert alert-warning">
+                    <span class="alert-icon">&#9888;&#65039;</span>
+                    <div><code>sentence-transformers</code>는 PyTorch를 포함하고 있어서 <strong>설치에 3~5분 이상</strong> 걸릴 수 있습니다. 멈춘 것처럼 보여도 기다려주세요!</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">설치 확인</div>
+                <div class="code-block">
+                    <code>python -c "import sentence_transformers; import lark; import langgraph; print('OK!')"</code>
+                </div>
+                <div class="result result-success">
+                    <span class="result-icon">&#10004;&#65039;</span>
+                    <span><code>OK!</code>가 출력되면 성공! Section 4(설치 확인)로 건너뛰세요.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: 처음부터 새로 만들기 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">B</div>
+                <div>
+                    <div class="step-title">처음부터 새로 만들기</div>
+                    <div class="step-subtitle">신규 설치 - 가상환경 생성부터 패키지 설치까지</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Substep 1: 가상환경 생성</div>
+                <div class="code-block">
+                    <span class="code-label">Windows</span>
+                    <code>python -m venv .venv</code>
+                </div>
+                <div class="code-block">
+                    <span class="code-label">Mac</span>
+                    <code>python3 -m venv .venv</code>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Substep 2: 가상환경 활성화</div>
+                <div class="code-block">
+                    <span class="code-label">Windows</span>
+                    <code>.venv\Scripts\activate</code>
+                </div>
+                <div class="code-block">
+                    <span class="code-label">Mac</span>
+                    <code>source .venv/bin/activate</code>
+                </div>
+                <p class="code-hint">터미널 앞에 (.venv) 가 표시되면 활성화 성공!</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Substep 3: pip 업그레이드</div>
+                <div class="code-block">
+                    <code>pip install --upgrade pip</code>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Substep 4: 패키지 설치</div>
+
+                <p style="margin-bottom: 0.75rem;"><strong>Option A: requirements.txt로 한번에 (권장)</strong></p>
+                <div class="code-block">
+                    <span class="code-label">권장</span>
+                    <code>pip install -r requirements.txt</code>
+                </div>
+                <p class="code-hint">프로젝트 폴더에 requirements.txt 파일이 있어야 합니다.</p>
+
+                <div class="section-divider"></div>
+
+                <p style="margin-bottom: 0.75rem;"><strong>Option B: 직접 설치</strong></p>
+                <p>requirements.txt가 없거나 수동으로 설치하고 싶을 때:</p>
+                <div class="code-block">
+                    <code>pip install langchain langchain-community langchain-ollama chromadb streamlit sentence-transformers lark langgraph numpy python-dotenv</code>
+                </div>
+
+                <div class="alert alert-warning">
+                    <span class="alert-icon">&#9888;&#65039;</span>
+                    <div><code>sentence-transformers</code>는 PyTorch를 포함하고 있어서 <strong>설치에 3~5분 이상</strong> 걸릴 수 있습니다. 멈춘 것처럼 보여도 기다려주세요!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: AI에게 시키기 -->
+        <div class="step-card" style="border: 2px solid var(--accent); background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+            <div class="step-header">
+                <div class="step-number" style="background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);">C</div>
+                <div>
+                    <div class="step-title">Antigravity한테 시키기</div>
+                    <div class="step-subtitle">AI에게 시키는 버전 - 복사해서 붙여넣기만 하세요!</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">처음부터 새로 만들 때</div>
+                <p>Antigravity 채팅창에 아래를 복사해서 붙여넣기:</p>
+                <div class="code-block" style="background: #166534;">
+                    <code>이 폴더에 Python 가상환경(.venv)을 만들고 활성화한 다음,
+requirements.txt 파일의 패키지를 모두 설치해줘.
+
+설치 후 잘 됐는지 확인해줘.</code>
+                </div>
+                <p class="code-hint">드래그해서 복사 후 Antigravity에 붙여넣기</p>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="substep">
+                <div class="substep-title">기존 환경에 추가 설치할 때</div>
+                <p>이미 1회차 가상환경이 있는 경우:</p>
+                <div class="code-block" style="background: #166534;">
+                    <code>이 폴더의 가상환경을 활성화하고,
+아래 패키지를 추가로 설치해줘:
+
+sentence-transformers
+lark
+langgraph
+numpy
+python-dotenv
+
+설치 후 잘 됐는지 확인해줘.</code>
+                </div>
+                <p class="code-hint">드래그해서 복사 후 Antigravity에 붙여넣기</p>
+            </div>
+        </div>
+
+        <!-- Section 4: 설치 확인 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div>
+                    <div class="step-title">설치 확인</div>
+                    <div class="step-subtitle">주요 패키지가 제대로 설치됐는지 확인하기</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">pip list로 확인</div>
+                <p>가상환경이 활성화된 상태에서 아래 명령을 실행하세요:</p>
+                <div class="code-block">
+                    <code>pip list</code>
+                </div>
+                <p>목록에서 아래 패키지들이 보이면 성공입니다.</p>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">2회차 세미나 필수 패키지</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>패키지</th>
+                                <th>용도</th>
+                                <th>관련 Step</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>langchain</code></td>
+                                <td>LLM 체인 구성</td>
+                                <td>전체</td>
+                            </tr>
+                            <tr>
+                                <td><code>chromadb</code></td>
+                                <td>벡터 데이터베이스</td>
+                                <td>전체</td>
+                            </tr>
+                            <tr>
+                                <td><code>streamlit</code></td>
+                                <td>웹 UI</td>
+                                <td>전체</td>
+                            </tr>
+                            <tr>
+                                <td><code>sentence-transformers</code></td>
+                                <td>리랭킹 모델</td>
+                                <td>Step 7</td>
+                            </tr>
+                            <tr>
+                                <td><code>lark</code></td>
+                                <td>Self-Query 파서</td>
+                                <td>Step 6</td>
+                            </tr>
+                            <tr>
+                                <td><code>langgraph</code></td>
+                                <td>에이전트 그래프</td>
+                                <td>Step 14</td>
+                            </tr>
+                            <tr>
+                                <td><code>numpy</code></td>
+                                <td>수학 연산</td>
+                                <td>Step 4 (BM25)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: 실행하기 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <div>
+                    <div class="step-title">실행하기</div>
+                    <div class="step-subtitle">환경 설정이 끝났으면 바로 실행!</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">Streamlit 앱 실행</div>
+                <div class="code-block">
+                    <code>streamlit run app_step6.py</code>
+                </div>
+                <p class="code-hint">2회차 세미나는 app_step6.py부터 시작합니다.</p>
+
+                <div class="alert alert-warning">
+                    <span class="alert-icon">&#9888;&#65039;</span>
+                    <div><strong>Ollama가 실행 중이어야 합니다!</strong> 터미널에서 <code>ollama list</code>를 실행해서 모델이 보이는지 확인하세요. 모델이 안 보이면 Ollama 앱을 먼저 실행해주세요.</div>
+                </div>
+
+                <div class="alert alert-success">
+                    <span class="alert-icon">&#10004;&#65039;</span>
+                    <div>브라우저에 <code>http://localhost:8501</code> 이 열리면 성공!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="step-card" style="border: 2px solid var(--warning);">
+            <div class="step-header">
+                <div class="step-number" style="background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);">!</div>
+                <div>
+                    <div class="step-title">문제 해결 (Troubleshooting)</div>
+                    <div class="step-subtitle">설치 중 문제가 생겼을 때</div>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">설치가 멈추면</div>
+                <p>의존성 해결이 오래 걸리는 경우, 레거시 리졸버를 사용해보세요:</p>
+                <div class="code-block">
+                    <code>pip install -r requirements.txt --use-deprecated=legacy-resolver</code>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">가상환경이 꼬이면</div>
+                <p>기존 가상환경을 삭제하고 처음부터 다시 만드는 게 가장 깔끔합니다:</p>
+                <div class="code-block">
+                    <span class="code-label">Windows</span>
+                    <code>rmdir /s /q .venv
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt</code>
+                </div>
+                <div class="code-block">
+                    <span class="code-label">Mac</span>
+                    <code>rm -rf .venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt</code>
+                </div>
+            </div>
+
+            <div class="substep">
+                <div class="substep-title">sentence-transformers 설치 실패</div>
+                <p>이 패키지는 PyTorch에 의존하기 때문에 Python 버전에 민감합니다.</p>
+                <div class="alert alert-info">
+                    <span class="alert-icon">&#128161;</span>
+                    <div><strong>Python 3.12 이하</strong>를 권장합니다. Python 3.13에서는 호환성 문제가 발생할 수 있습니다.<br>
+                    Python 버전 확인: <code>python --version</code></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p style="margin-bottom: 1rem;">
+                <a href="index.html">&larr; 1회차 설정 가이드로 돌아가기</a>
+            </p>
+            <p>작성일: 2026년 2월 | 데이터공작소 TFT</p>
+        </footer>
+    </div>
+
+</body>
+</html>

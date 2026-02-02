@@ -634,6 +634,19 @@
         </div>
     </header>
 
+    <!-- 2회차 가이드 링크 -->
+    <div class="container">
+        <a href="quick-venv-setup.html" style="display:block; text-decoration:none; margin-bottom:-1rem;">
+            <div style="background:linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color:white; border-radius:1rem; padding:1.25rem 2rem; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); margin-top:-2rem; position:relative; z-index:11;">
+                <div>
+                    <span style="background:rgba(255,255,255,0.2); padding:0.25rem 0.75rem; border-radius:1rem; font-size:0.8rem; margin-right:0.5rem;">NEW</span>
+                    <strong>2회차 세미나 참가자라면?</strong> 빠른 가상환경 설정 가이드로 이동
+                </div>
+                <span style="font-size:1.5rem;">→</span>
+            </div>
+        </a>
+    </div>
+
     <!-- Flow Overview -->
     <div class="container">
         <div class="flow-section">
@@ -926,6 +939,7 @@ langchain-community==0.3.14
 chromadb==0.5.23
 streamlit==1.41.1
 pypdf==5.1.0
+rank_bm25==0.2.2
 
 설치 후 가상환경의 파이썬 버전도 확인해줘.</code>
                 </div>
@@ -958,6 +972,7 @@ langchain-community==0.3.14
 chromadb==0.5.23
 streamlit==1.41.1
 pypdf==5.1.0
+rank_bm25==0.2.2
 
 설치 후 가상환경의 파이썬 버전도 확인해줘.</code>
                 </div>
@@ -1188,6 +1203,29 @@ Connection refused / Ollama not running
                     <div>브라우저가 자동으로 안 열리면 직접 <code>http://localhost:8501</code> 주소를 입력하세요!</div>
                 </div>
             </div>
+
+            <div class="substep">
+                <div class="substep-title">💬 질문해보기 (app_step1.py 실행 후)</div>
+                <p>PDF 파일을 업로드하고 벡터DB를 생성한 후, 아래 질문들을 해보세요:</p>
+
+                <div style="background: var(--bg); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0;">
+                    <p style="font-weight: 600; margin-bottom: 1rem; color: var(--primary);">📋 연말정산 관련 예시 질문</p>
+                    <ul class="step-list">
+                        <li>"2025년 연말정산 주요 일정은 어떻게 되나요?"</li>
+                        <li>"연말정산 결과를 언제까지 제출해야 하나요?"</li>
+                        <li>"신용카드 등 사용금액 소득공제 한도는 얼마입니까?"</li>
+                        <li>"의료비 세액공제는 총급여의 몇 퍼센트를 초과해야 하나요?"</li>
+                        <li>"부양가족 인적공제를 받기 위한 나이 요건과 소득 요건은?"</li>
+                        <li>"중소기업 취업자 소득세 감면 대상과 기간은 어떻게 됩니까?"</li>
+                        <li>"월세 세액공제율이 총급여 5,500만원 이하인 경우와 7,000만원 이하인 경우 각각 몇 퍼센트입니까?"</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-success">
+                    <span class="alert-icon">✨</span>
+                    <div>RAG 챗봇이 PDF 문서를 검색해서 답변해줍니다!<br>같은 질문을 ChatGPT에게도 해보고 답변을 비교해보세요.</div>
+                </div>
+            </div>
         </div>
 
         <!-- Help Section -->
@@ -1289,7 +1327,7 @@ ollama pull bge-m3</code>
                 <div class="substep-title">해결: 터미널에서 직접 설치</div>
                 <p>터미널(CMD/PowerShell)을 열고 <code>rag_chatbot</code> 폴더로 이동한 후 아래 명령어를 실행하세요:</p>
                 <div class="code-block">
-                    <code>pip install streamlit langchain langchain-ollama chromadb pypdf</code>
+                    <code>pip install streamlit langchain langchain-ollama chromadb pypdf rank_bm25</code>
                 </div>
             </div>
 
@@ -1323,6 +1361,10 @@ ollama pull bge-m3</code>
                             <tr>
                                 <td><code>pypdf</code></td>
                                 <td>PDF 파일 읽기</td>
+                            </tr>
+                            <tr>
+                                <td><code>rank_bm25</code></td>
+                                <td>키워드 기반 검색 (Hybrid Search용)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1402,6 +1444,7 @@ langchain-community==0.3.14
 chromadb==0.5.23
 streamlit==1.41.1
 pypdf==5.1.0
+rank_bm25==0.2.2
 
 설치 후 가상환경의 파이썬 버전도 확인해줘.</code>
                 </div>
@@ -1540,6 +1583,9 @@ ollama rm bge-m3</code>
 
         <!-- Footer -->
         <footer class="footer">
+            <p style="margin-bottom: 1rem;">
+                <a href="quick-venv-setup.html" style="color: #0d9488; text-decoration: none; font-weight: 700;">2회차 세미나 빠른 설정 가이드 →</a>
+            </p>
             <p>작성일: 2026년 1월 | 버전: 2.3</p>
             <p>데이터공작소 TFT</p>
         </footer>
